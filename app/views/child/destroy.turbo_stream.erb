@@ -1,0 +1,13 @@
+<%= turbo_stream.remove dom_id(@child, @index) %>
+
+<% if @child.id %>
+  <%= form_with(model: Parent.new, id:"GOMI", url: home_index_path) do |form| %>
+    <%= turbo_stream.append 'new_children' do %>
+      <%= form.fields_for :children, @child, child_index: @index do |subform| %>
+        <%= subform.hidden_field :id %>
+        <%= subform.hidden_field :delete_flag, value: "true" %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= turbo_stream.remove 'GOMI' %>
+<% end %>

@@ -1,0 +1,21 @@
+<%= @parent.name %>
+<div style="margin-left: 10px;">
+  <p>
+  子
+  </p>
+  <% @parent.children.each do |child| %>
+    <div>
+      <%= child.name %>
+      <div style="margin-left: 10px;">
+        孫
+        <% child.grand_children.each do |grand_child| %>
+          <div>
+            <%= grand_child.name %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<br />
+<%= link_to "編集", edit_home_path(@parent.id) %>

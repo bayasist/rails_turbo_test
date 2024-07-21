@@ -1,0 +1,17 @@
+<%= turbo_frame_tag 'parent' do %>
+  <%= form_with model: @parent, url: home_path(@parent.id) do |f| %>
+    name: <%= f.text_field :name %>
+    <p>
+      子
+    </p>
+    <% f.object.children.each_with_index  do |child, i|%>
+      <%= f.fields_for :children, child, child_index: i do |child_form| %>
+        <%= render "child/form", form: child_form, index: i %>
+      <% end %>
+    <% end %>
+    <%= turbo_frame_tag 'new_children' %>
+    <%= link_to "子の追加", new_child_path, data: {turbo: true, turbo_stream: true} %>
+    <br />
+    <%= f.submit "作成", data: {turbo_frame: "_top"} %>
+  <% end %>
+<% end %>

@@ -1,0 +1,20 @@
+<% index ||= nil %>
+<%= turbo_frame_tag dom_id(form.object, index) do %>
+  <div style="border: solid 1px black">
+    <%= form.hidden_field :id %>
+    <%= form.label :name %>
+    <%= form.text_field :name %><br />
+    <%= link_to "削除", child_path(form.object.id || 0, index: index), data: { turbo_method: :delete, turbo_confirm: "SURE?", turbo: true, turbo_stream: true} %>
+    <br />
+    <p>
+      孫
+    </p>
+    <% form.object.grand_children.each_with_index  do |grand_child, i| %>
+      <%= form.fields_for :grand_children, grand_child, child_index: i do |grand_child_form| %>
+        <%= render "grand_child/form", form: grand_child_form, index: i, child_index: index %>
+      <% end %>
+    <% end %>
+    <%= turbo_frame_tag "new_grand_children_#{index}" %>
+    <%= link_to "孫の追加", new_grand_child_path(child_index: index), data: {turbo: true, turbo_stream: true} %>
+  </div>
+<% end %>

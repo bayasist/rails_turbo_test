@@ -1,0 +1,11 @@
+<%= form_with(model: Parent.new, id:"GOMI", url: home_index_path) do |form| %>
+  <%= turbo_stream.append "new_grand_children_#{@child_index}" do %>
+    <%= form.fields_for :children, Child.new, child_index: @child_index do |child_form| %>
+      <%= child_form.fields_for :grand_children, GrandChild.new, child_index: @index do |grand_child_form| %>
+        <%= render partial: "grand_child/form", locals: {form: grand_child_form, index: @index, child_index: @child_index } %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.remove 'GOMI' %>
